@@ -1,15 +1,17 @@
 package com.yeahmobi.log4j.test;
 
 import org.apache.commons.cli.*;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Log4jTest {
-    private static final Logger LOGGER = Logger.getLogger(Log4jTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Log4jTest.class);
 
     public static void main(String[] args) throws ParseException {
 
@@ -57,7 +59,7 @@ public class Log4jTest {
                 countDownLatch.countDown();
                 countDownLatch.await();
                 while (counter.getAndDecrement() > 0) {
-                    logger.info("The general contract of the method <code>run</code> is that it may take any action whatsoever.");
+                    logger.info("The general contract of the method <code>run</code> is that it may take any action whatsoever. {}", UUID.randomUUID().toString());
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
