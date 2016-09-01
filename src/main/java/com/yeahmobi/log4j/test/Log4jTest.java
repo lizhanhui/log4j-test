@@ -1,5 +1,6 @@
 package com.yeahmobi.log4j.test;
 
+import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 
 import java.util.concurrent.CountDownLatch;
@@ -10,10 +11,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Log4jTest {
     private static final Logger LOGGER = Logger.getLogger(Log4jTest.class);
 
-    public static void main(String[] args) {
-        int concurrency = 10;
+    public static void main(String[] args) throws ParseException {
+
+        Options options = new Options();
+        options.addOption("p", "parallel", true, "Parallelism count");
+        options.addOption("n", "number", true, "Number of logs to write down");
+
+        CommandLineParser parser = new DefaultParser();
+
+        CommandLine commandLine = parser.parse(options, args);
+
+        int concurrency;
+        int total;
+
+        concurrency = Integer.parseInt(commandLine.getOptionValue("p", "10"));
+        total = Integer.parseInt(commandLine.getOptionValue("n", "1000000"));
+
+
         CountDownLatch countDownLatch = new CountDownLatch(concurrency);
-        AtomicInteger counter = new AtomicInteger(100000);
+        AtomicInteger counter = new AtomicInteger(total);
 
         ExecutorService threadPool = Executors.newFixedThreadPool(concurrency);
 
