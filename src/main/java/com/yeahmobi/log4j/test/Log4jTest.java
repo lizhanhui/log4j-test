@@ -20,6 +20,8 @@ public class Log4jTest {
         for (int i = 0; i < concurrency; i++) {
             threadPool.submit(new Task(countDownLatch, LOGGER, counter));
         }
+
+        threadPool.shutdown();
     }
 
     static class Task implements Runnable {
